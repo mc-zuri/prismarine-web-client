@@ -34,6 +34,9 @@ patchedDependencies:
   mineflayer-item-map-downloader@1.2.0:
     hash: a731ebbace2d8790c973ab3a5ba33494a6e9658533a9710dd8ba36f86db061ad
     path: patches/mineflayer-item-map-downloader@1.2.0.patch
+  mineflayer-mouse@0.1.28:
+    hash: 754294059b5b2902200fb49ac0db1bebf6f42c02d9dcb97690bdffca10aba680
+    path: patches/mineflayer-mouse@0.1.28.patch
   pixelarticons@1.8.1:
     hash: 533230072bc402f425c86abd3d0356fe087b14cab2a254d93f419b083f2d8dfa
     path: patches/pixelarticons@1.8.1.patch
@@ -369,7 +372,7 @@ importers:
         version: file:../mineflayer(encoding@0.1.13)
       mineflayer-mouse:
         specifier: 0.1.28
-        version: 0.1.28
+        version: 0.1.28(patch_hash=754294059b5b2902200fb49ac0db1bebf6f42c02d9dcb97690bdffca10aba680)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -15904,7 +15907,7 @@ snapshots:
       deepslate: 0.24.0
       events: 3.3.0
       mc-bridge: 0.1.3(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
-      mineflayer-mouse: 0.1.28
+      mineflayer-mouse: 0.1.28(patch_hash=754294059b5b2902200fb49ac0db1bebf6f42c02d9dcb97690bdffca10aba680)
       prismarine-chat: 1.11.0
       prismarine-nbt: 2.7.0
       skinview-utils: 0.7.1
@@ -15934,7 +15937,7 @@ snapshots:
       - encoding
       - supports-color
 
-  mineflayer-mouse@0.1.28:
+  mineflayer-mouse@0.1.28(patch_hash=754294059b5b2902200fb49ac0db1bebf6f42c02d9dcb97690bdffca10aba680):
     dependencies:
       change-case: 5.4.4
       debug: 4.4.3(supports-color@8.1.1)
