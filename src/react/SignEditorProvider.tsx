@@ -29,6 +29,7 @@ export default () => {
     bot._client.write('update_sign', {
       location,
       isFrontText,
+      slot: isFrontText ? 'front' : 'back', // 26.3+ names the side (older versions do not write it)
       text1: result.plainText[0],
       text2: result.plainText[1],
       text3: result.plainText[2],
