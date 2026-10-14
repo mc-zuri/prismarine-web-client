@@ -208,7 +208,7 @@
       "minecraft-data": "link:../../mineflayer-monorepo/packages/minecraft-data",
       "prismarine-provider-anvil": "github:zardoy/prismarine-provider-anvil#everything",
       "prismarine-physics": "github:zardoy/prismarine-physics",
-      "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
+      "minecraft-protocol": "file:../../mineflayer-monorepo/packages/minecraft-protocol",
       "react": "^18.2.0",
       "prismarine-chunk": "file:../../github/prismarine-chunk",
       "prismarine-item": "latest",
@@ -223,7 +223,7 @@
     "patchedDependencies": {
       "pixelarticons@1.8.1": "patches/pixelarticons@1.8.1.patch",
       "mineflayer-item-map-downloader@1.2.0": "patches/mineflayer-item-map-downloader@1.2.0.patch",
-      "minecraft-protocol": "patches/minecraft-protocol@1.66.0.patch",
+      "minecraft-protocol": "patches/minecraft-protocol@1.68.0.patch",
       "@nxg-org/mineflayer-auto-jump@0.8.0": "patches/@nxg-org__mineflayer-auto-jump@0.8.0.patch"
     },
     "ignoredBuiltDependencies": [
