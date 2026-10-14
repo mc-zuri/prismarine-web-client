@@ -20,7 +20,7 @@ overrides:
   prismarine-physics: github:zardoy/prismarine-physics
   minecraft-protocol: github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270
   react: ^18.2.0
-  prismarine-chunk: github:zardoy/prismarine-chunk#master
+  prismarine-chunk: file:../../github/prismarine-chunk
   prismarine-item: latest
   valtio: 1.13.2
 
@@ -6833,9 +6833,8 @@ packages:
   prismarine-chat@1.11.0:
     resolution: {integrity: sha512-VJT/MWYB3qoiznUhrgvSQh76YFpzpCZpY85kJKxHLbd3UVoM0wsfs43Eg8dOltiZG92wc5/DTMLlT07TEeoa9w==}
 
-  prismarine-chunk@https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a:
-    resolution: {tarball: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a}
-    version: 1.40.0
+  prismarine-chunk@file:../../github/prismarine-chunk:
+    resolution: {directory: ../../github/prismarine-chunk, type: directory}
     engines: {node: '>=14'}
 
   prismarine-entity@2.5.0:
@@ -12290,7 +12289,7 @@ snapshots:
       node-gzip: 1.1.2
       node-rsa: 1.1.1
       prismarine-block: https://codeload.github.com/zardoy/prismarine-block/tar.gz/401a296892fbde312ade34685fdc2db3d31668ad
-      prismarine-chunk: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
+      prismarine-chunk: file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
       prismarine-entity: 2.5.0
       prismarine-item: 1.18.0
       prismarine-nbt: 2.7.0
@@ -12326,7 +12325,7 @@ snapshots:
       mkdirp: 2.1.6
       node-gzip: 1.1.2
       node-rsa: 1.1.1
-      prismarine-chunk: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
+      prismarine-chunk: file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
       prismarine-entity: 2.5.0
       prismarine-item: 1.18.0
       prismarine-nbt: 2.7.0
@@ -13499,7 +13498,7 @@ snapshots:
   diamond-square@https://codeload.github.com/zardoy/diamond-square/tar.gz/cfaad2d1d5909fdfa63c8cc7bc05fb5e87782d71:
     dependencies:
       minecraft-data: link:../../mineflayer-monorepo/packages/minecraft-data
-      prismarine-chunk: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
+      prismarine-chunk: file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
       prismarine-registry: 1.11.0
       random-seed: 0.3.0
       vec3: 0.1.10
@@ -15965,7 +15964,7 @@ snapshots:
       prismarine-biome: 1.3.0(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(prismarine-registry@1.11.0)
       prismarine-block: https://codeload.github.com/zardoy/prismarine-block/tar.gz/401a296892fbde312ade34685fdc2db3d31668ad
       prismarine-chat: 1.11.0
-      prismarine-chunk: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
+      prismarine-chunk: file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
       prismarine-entity: 2.5.0
       prismarine-item: 1.18.0
       prismarine-nbt: 2.7.0
@@ -16602,7 +16601,7 @@ snapshots:
       prismarine-nbt: 2.7.0
       prismarine-registry: 1.11.0
 
-  prismarine-chunk@https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data):
+  prismarine-chunk@file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data):
     dependencies:
       prismarine-biome: 1.3.0(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(prismarine-registry@1.11.0)
       prismarine-block: https://codeload.github.com/zardoy/prismarine-block/tar.gz/401a296892fbde312ade34685fdc2db3d31668ad
@@ -16640,7 +16639,7 @@ snapshots:
   prismarine-provider-anvil@https://codeload.github.com/zardoy/prismarine-provider-anvil/tar.gz/c4c47c0ffcc6cebcc85a414d73b1795cbfa2c6b9(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data):
     dependencies:
       prismarine-block: https://codeload.github.com/zardoy/prismarine-block/tar.gz/401a296892fbde312ade34685fdc2db3d31668ad
-      prismarine-chunk: https://codeload.github.com/zardoy/prismarine-chunk/tar.gz/1eb3a5d85dffe18b7b504c6e5871c4b36681df1a(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
+      prismarine-chunk: file:../../github/prismarine-chunk(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)
       prismarine-nbt: 2.7.0
       uint4: 0.1.2
       vec3: 0.1.10

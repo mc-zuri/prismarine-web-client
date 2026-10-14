@@ -210,7 +210,7 @@
       "prismarine-physics": "github:zardoy/prismarine-physics",
       "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
       "react": "^18.2.0",
-      "prismarine-chunk": "github:zardoy/prismarine-chunk#master",
+      "prismarine-chunk": "file:../../github/prismarine-chunk",
       "prismarine-item": "latest",
       "valtio": "1.13.2"
     },
