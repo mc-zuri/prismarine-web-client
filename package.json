@@ -87,7 +87,7 @@
     "mcraft-fun-mineflayer": "^0.1.23",
     "minecraft-data": "0.0.0",
     "minecraft-inventory": "^0.1.47",
-    "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#master",
+    "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
     "minecraft-renderer": "^0.1.99",
     "mineflayer-item-map-downloader": "github:zardoy/mineflayer-item-map-downloader",
     "mojangson": "^2.0.4",
@@ -195,8 +195,8 @@
   },
   "pnpm": {
     "overrides": {
-      "mineflayer": "github:zardoy/mineflayer#gen-the-master",
-      "@nxg-org/mineflayer-physics-util": "https://github.com/zardoy/mineflayer-physics-utils",
+      "mineflayer": "file:../mineflayer",
+      "@nxg-org/mineflayer-physics-util": "file:../mineflayer-physics-utils",
       "buffer": "^6.0.3",
       "vec3": "0.1.10",
       "three": "0.184.0",
@@ -207,7 +207,7 @@
       "minecraft-data": "3.105.0",
       "prismarine-provider-anvil": "github:zardoy/prismarine-provider-anvil#everything",
       "prismarine-physics": "github:zardoy/prismarine-physics",
-      "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#master",
+      "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
       "react": "^18.2.0",
       "prismarine-chunk": "github:zardoy/prismarine-chunk#master",
       "prismarine-item": "latest",
