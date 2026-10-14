@@ -1,3 +1,16 @@
+diff --git a/dist/itemBlocksStatic.js b/dist/itemBlocksStatic.js
+index 271bd69e8350c4fe21aac5f38a07c189dbe4bf0c..d261cbcd861a7cb1300e4715bceb69e6705f09c1 100644
+--- a/dist/itemBlocksStatic.js
++++ b/dist/itemBlocksStatic.js
+@@ -35,6 +35,8 @@ exports.activatableBlockWithoutItemPatterns = [
+     /^(dragon_egg|flower_pot|sweet_berry_bush|cave_vines.*|.*candle.*)$/,
+     // Misc
+     /^(cake|decorated_pot|crafter|trial_spawner|vault)$/,
++    // useItemOn consumes any item but an axe (26.x CopperGolemStatueBlock), which uses the item itself
++    /^.*copper_golem_statue$/,
+     // fence (ignore)
+     // sign (ignore)
+ ];
 diff --git a/dist/mouse.js b/dist/mouse.js
 index 17d2e212b251efa9ea90e621d9ca33b8c932ebbb..2f016a9459cbd69396208afdf3aebd78f722e4fa 100644
 --- a/dist/mouse.js
