@@ -211,6 +211,7 @@
       "minecraft-protocol": "file:../../mineflayer-monorepo/packages/minecraft-protocol",
       "react": "^18.2.0",
       "prismarine-chunk": "file:../../github/prismarine-chunk",
+      "mc-assets": "file:../../github/mc-assets",
       "prismarine-item": "latest",
       "valtio": "1.13.2"
     },
