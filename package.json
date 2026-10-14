@@ -204,7 +204,7 @@
       "diamond-square": "github:zardoy/diamond-square",
       "prismarine-block": "github:zardoy/prismarine-block#next-era",
       "prismarine-world": "github:zardoy/prismarine-world#next-era",
-      "minecraft-data": "3.105.0",
+      "minecraft-data": "link:../../mineflayer-monorepo/packages/minecraft-data",
       "prismarine-provider-anvil": "github:zardoy/prismarine-provider-anvil#everything",
       "prismarine-physics": "github:zardoy/prismarine-physics",
       "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
