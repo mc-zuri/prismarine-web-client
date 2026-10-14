@@ -1,0 +1,14 @@
+diff --git a/dist/autoJumper.js b/dist/autoJumper.js
+index d45325d2b1dbc23dec3625ea2cce2425f3b32776..8bcd9399814669c11329fcd8465ef6acae6b14e5 100644
+--- a/dist/autoJumper.js
++++ b/dist/autoJumper.js
+@@ -407,7 +407,8 @@ class JumpChecker extends mineflayer_physics_util_1.BaseSimulator {
+      * @returns Should we jump or not, depending on leaving edge of block to fall.
+      */
+     shouldJumpSinceBlockEdge() {
+-        const nextTick = this.predictForward(this.bot.entity, this.bot.world, 1);
++        // the bot's own player state (FROM_ENTITY gives an EntityState, which the player physics cannot step)
++        const nextTick = this.predictForwardRaw(mineflayer_physics_util_1.EPhysicsCtx.FROM_BOT(this.ctx, this.bot), this.bot.world, 1);
+         return this.bot.entity.onGround && !nextTick.onGround;
+     }
+     /**
