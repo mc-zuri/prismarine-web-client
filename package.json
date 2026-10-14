@@ -196,6 +196,7 @@
   "pnpm": {
     "overrides": {
       "mineflayer": "file:../mineflayer",
+      "minecraft-renderer": "file:../../github/minecraft-renderer",
       "@nxg-org/mineflayer-physics-util": "file:../mineflayer-physics-utils",
       "buffer": "^6.0.3",
       "vec3": "0.1.10",

@@ -6,6 +6,7 @@ settings:
 
 overrides:
   mineflayer: file:../mineflayer
+  minecraft-renderer: file:../../github/minecraft-renderer
   '@nxg-org/mineflayer-physics-util': file:../mineflayer-physics-utils
   buffer: ^6.0.3
   vec3: 0.1.10
@@ -168,8 +169,8 @@ importers:
         specifier: github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270
         version: https://codeload.github.com/PrismarineJS/node-minecraft-protocol/tar.gz/aa23a03964bf84e2f7fe813818a4ec5b7b2a1270(patch_hash=0cffd9b015010b93745754a43578ac24b7884db120779da4a30ca49b6db186f2)(encoding@0.1.13)
       minecraft-renderer:
-        specifier: ^0.1.99
-        version: 0.1.99(@types/react@18.3.18)(contro-max@0.1.12(typescript@5.5.4))(mc-assets@0.2.72)(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(react@18.3.1)(three@0.184.0)
+        specifier: file:../../github/minecraft-renderer
+        version: file:../../github/minecraft-renderer(@types/react@18.3.18)(contro-max@0.1.12(typescript@5.5.4))(mc-assets@0.2.72)(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(react@18.3.1)(three@0.184.0)
       mineflayer-item-map-downloader:
         specifier: github:zardoy/mineflayer-item-map-downloader
         version: https://codeload.github.com/zardoy/mineflayer-item-map-downloader/tar.gz/a8d210ecdcf78dd082fa149a96e1612cc9747824(patch_hash=a731ebbace2d8790c973ab3a5ba33494a6e9658533a9710dd8ba36f86db061ad)(encoding@0.1.13)
@@ -6216,9 +6217,8 @@ packages:
     version: 1.66.2
     engines: {node: '>=22'}
 
-  minecraft-renderer@0.1.99:
-    resolution: {integrity: sha512-IDoMHJNDCPd+LfzaAmQt91BWg6SSseReimevRwZjt0M7PJ945P3eo5IvpBn9HXhVtSidSW/kpf4TnE+kT8HmVg==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+  minecraft-renderer@file:../../github/minecraft-renderer:
+    resolution: {directory: ../../github/minecraft-renderer, type: directory}
     peerDependencies:
       contro-max: '*'
       mc-assets: '>=0.2.0'
@@ -15909,7 +15909,7 @@ snapshots:
       - encoding
       - supports-color
 
-  minecraft-renderer@0.1.99(@types/react@18.3.18)(contro-max@0.1.12(typescript@5.5.4))(mc-assets@0.2.72)(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(react@18.3.1)(three@0.184.0):
+  minecraft-renderer@file:../../github/minecraft-renderer(@types/react@18.3.18)(contro-max@0.1.12(typescript@5.5.4))(mc-assets@0.2.72)(minecraft-data@..+mineflayer-monorepo+packages+minecraft-data)(react@18.3.1)(three@0.184.0):
     dependencies:
       '@tweenjs/tween.js': 20.0.3
       '@types/events': 3.0.3

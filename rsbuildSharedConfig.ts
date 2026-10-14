@@ -85,12 +85,6 @@ export const appAndRendererSharedConfig = () => defineConfig({
 })
 
 export const rspackViewerConfig = (config: any, { appendPlugins, addRules, rspack }: ModifyRspackConfigUtils) => {
-    // Keep camera-dependent cube draw ranges within WebGL argument-array bounds.
-    appendPlugins(new rspack.NormalModuleReplacementPlugin(/^\.\/cubeMultiDraw$/, (resource) => {
-        if (resource.context.replaceAll('\\', '/').endsWith('/minecraft-renderer/src/three')) {
-            resource.request = path.join(__dirname, './src/shims/rendererCubeMultiDraw.ts')
-        }
-    }))
     appendPlugins(new rspack.NormalModuleReplacementPlugin(/data|prismarine-physics/, (resource) => {
         let absolute: string
         const request = resource.request.replaceAll('\\', '/')
