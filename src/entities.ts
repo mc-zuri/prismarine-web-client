@@ -122,8 +122,27 @@ customEvents.on('gameLoaded', () => {
     })
   })
 
-  bot.on('entitySwingArm', (e) => {
-    getThreeJsRendererMethods()?.playEntityAnimation(e.id, 'oneSwing')
+  // the animate packet's swings (0 the main hand, 3 the off hand from 1.9; 26.3 sends them as swing_animation): the
+  // exported models' attack poses follow the hand, players' skinview3d arm swings with the main hand
+  const swingEntity = (entityId: number, hand: 0 | 3) => {
+    if (bot.entities[entityId]?.type === 'player' && hand === 0) {
+      getThreeJsRendererMethods()?.playEntityAnimation(entityId, 'oneSwing')
+    } else {
+      getThreeJsRendererMethods()?.entitySwing(entityId, hand)
+    }
+  }
+  bot._client.on('animation', ({ entityId, animation }) => {
+    if (versionToNumber(bot.version) >= versionToNumber('26.3')) return
+    if (animation === 0) swingEntity(entityId, 0)
+    else if (animation === 3 && versionToNumber(bot.version) >= versionToNumber('1.9')) swingEntity(entityId, 3)
+  })
+  bot._client.on('swing_animation' as any, ({ entityId, hand }) => {
+    swingEntity(entityId, hand === 'off_hand' ? 3 : 0)
+  })
+
+  // the level's game time, which bubble-column boat rocking before 1.21.5 counts from
+  bot.on('time', () => {
+    getThreeJsRendererMethods()?.setWorldAge(Number(bot.time.age))
   })
 
   bot.on('botArmSwingStart', (hand) => {

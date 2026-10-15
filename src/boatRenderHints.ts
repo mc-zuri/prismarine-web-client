@@ -34,6 +34,8 @@ export type VehicleRenderHints = {
   boatPaddleRight?: boolean
   /** @deprecated Use passengerIds */
   boatPassengerIds?: number[]
+  /** the entity touches water (Entity.wasTouchingWater): the exported models' swim and water poses read it */
+  isInWater?: boolean
 }
 
 export type BoatPaddleState = {
@@ -172,6 +174,26 @@ function isInWater (bb: ReturnType<typeof getEntityBB>, world: WorldLike, ids: W
   return false
 }
 
+/**
+ * Entity.updateFluidHeightAndDoFluidPushing's water check: water in the box deflated by 0.001 whose surface is at or
+ * above the box's bottom. Not in water while the blocks aren't loaded, as the game.
+ */
+function isTouchingWater (bb: ReturnType<typeof getEntityBB>, world: WorldLike, ids: WaterIds): boolean {
+  const minY = bb.minY + 0.001
+  const cursor = new Vec3(0, 0, 0)
+  for (cursor.x = Math.floor(bb.minX + 0.001); cursor.x < Math.ceil(bb.maxX - 0.001); cursor.x++) {
+    for (cursor.y = Math.floor(minY); cursor.y < Math.ceil(bb.maxY - 0.001); cursor.y++) {
+      for (cursor.z = Math.floor(bb.minZ + 0.001); cursor.z < Math.ceil(bb.maxZ - 0.001); cursor.z++) {
+        const block = world.getBlock(cursor)
+        if (block === null) return false
+        if (!isWaterBlock(block, ids)) continue
+        if (cursor.y + getFluidHeight(block, world, cursor, ids) >= minY) return true
+      }
+    }
+  }
+  return false
+}
+
 export function getRemoteBoatWaterPatchVisible (
   entity: VehicleEntityLike,
   world: WorldLike,
@@ -274,6 +296,10 @@ export function buildEntityRenderHints (
   )
   if (isLocalVehicle) {
     renderHints.localVehicle = true
+  }
+
+  if (entity.width !== undefined && entity.height !== undefined) {
+    renderHints.isInWater = isTouchingWater(getEntityBB(entity), options.world, options.waterIds)
   }
 
   const passengerIds = collectPassengerIds(entity)

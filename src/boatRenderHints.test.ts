@@ -535,3 +535,22 @@ test('getRemoteBoatPaddleState ignores truthy non-boolean metadata', () => {
   }
   expect(getRemoteBoatPaddleState(entity, '1.17.1')).toEqual({ leftPaddle: false, rightPaddle: false })
 })
+
+test('buildEntityRenderHints tells whether any entity touches water', () => {
+  const frog = { name: 'frog', id: 3, position: new Vec3(0.5, 62.5, 0.5), width: 0.5, height: 0.5 }
+  const options = {
+    localVehicle: null,
+    localBoatStatus: null,
+    horseControllerActive: false,
+    waterIds: { waterId, flowingWaterId },
+    version: '1.21.4',
+  }
+  // a source's surface is at y + 8/9 or higher, so the frog's feet at 62.5 are in it
+  expect(buildEntityRenderHints(frog, { ...options, world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }) }).isInWater).toBe(true)
+  // water in the block above the feet
+  expect(buildEntityRenderHints({ ...frog, position: new Vec3(0.5, 61.8, 0.5) }, { ...options, world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }) }).isInWater).toBe(true)
+  expect(buildEntityRenderHints(frog, { ...options, world: makeWorld({}) }).isInWater).toBe(false)
+  // standing on top of the water block
+  expect(buildEntityRenderHints({ ...frog, position: new Vec3(0.5, 63, 0.5) }, { ...options, world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }) }).isInWater).toBe(false)
+  expect(buildEntityRenderHints(frog, { ...options, world: makeWorld({ '0,62,0': null }) }).isInWater).toBe(false)
+})
