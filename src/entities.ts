@@ -151,6 +151,8 @@ customEvents.on('gameLoaded', () => {
   })
 
   bot._client.on('entity_status', (data) => {
+    // entity events start keyframe animations (warden attack and sonic boom, creaking attack and tear-down)
+    getThreeJsRendererMethods()?.entityEvent(data.entityId, data.entityStatus)
     if (versionToNumber(bot.version) >= versionToNumber('1.19.4')) return
     const { entityId, entityStatus } = data
     if (entityStatus === EntityStatus.HURT) {
