@@ -2,6 +2,16 @@
 export * from 'crypto-browserify'
 export function createPublicKey() { }
 
+// node's crypto.randomUUID (minecraft-protocol's server login uses it from 26.2); the browser only has it in secure contexts
+export function randomUUID() {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID()
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(16))
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('')
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+}
+
 // CUSTOM SIGN ASYNC IMPLEMENTATION FOR BROWSERS
 
 export async function sign(signatureAlgorithm, data, privateKeyPem) {
