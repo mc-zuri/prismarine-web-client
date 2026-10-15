@@ -1,0 +1,73 @@
+diff --git a/src/connector/mineflayer.ts b/src/connector/mineflayer.ts
+index 64b1e49..554cfbf 100644
+--- a/src/connector/mineflayer.ts
++++ b/src/connector/mineflayer.ts
+@@ -17,6 +17,16 @@ import {
+ 
+ type RawSlot = { type: number; count: number; metadata?: number; nbt?: unknown }
+ 
++/**
++ * The empty cursor of a raw window_click: absent since 1.21.5 (HashedStack.EMPTY), before that the version's empty
++ * Slot (prismarine-item's toNotch(null): { blockId: -1 } before 1.13, { present: false } 1.13 - 1.20.4, count 0 after).
++ */
++function emptyClickSlotOf(bot: MineflayerBot): any {
++  const registry = (bot as any).registry
++  if (registry?.version?.['>=']?.('1.21.5')) return undefined
++  return require('prismarine-item')(registry).toNotch(null)
++}
++
+ /**
+  * Options for {@link createMineflayerConnector}.
+  */
+@@ -180,6 +190,14 @@ function isBeaconWindow(win: unknown): win is { setBeaconEffects?: (primary: num
+ }
+ 
+ export function createMineflayerConnector(bot: MineflayerBot, options?: MineflayerConnectorOptions): InventoryConnector {
++  const emptyClickSlot = () => emptyClickSlotOf(bot)
++  // before 1.17 a click carries its action number and clicked item (ServerboundContainerClickPacket); the raw clicks
++  // count down from -1, apart from mineflayer's, and mineflayer accepts the server's answer to one it did not send
++  let legacyAction = 0
++  const legacyClickFields = () => {
++    legacyAction = legacyAction <= -32768 ? -1 : legacyAction - 1
++    return { action: legacyAction, item: emptyClickSlot() }
++  }
+   const listeners = new Set<ConnectorListener>()
+   const ext = bot as MineflayerBotExtended
+   const convert = makeSlotConverter(options?.itemMapper)
+@@ -799,7 +817,8 @@ export function createMineflayerConnector(bot: MineflayerBot, options?: Mineflay
+             mouseButton: 0,
+             mode: 6,
+             changedSlots: [],
+-            cursorItem: { present: false } as any,
++            cursorItem: emptyClickSlot(),
++            ...legacyClickFields(),
+           }
+           logPacketWrite('window_click', packet)
+           ext._client.write('window_click', packet)
+@@ -830,7 +849,7 @@ export function createMineflayerConnector(bot: MineflayerBot, options?: Mineflay
+           const slotButton = isRight ? 5 : 1
+           const endButton = isRight ? 6 : 2
+           const windowId = bot.currentWindow ? bot.currentWindow.id : 0
+-          const cursorItem = { present: false } as any
++          const cursorItem = emptyClickSlot()
+   
+           isDraggingRaw = true
+           try {
+@@ -843,6 +862,7 @@ export function createMineflayerConnector(bot: MineflayerBot, options?: Mineflay
+                 mode: 5,
+                 changedSlots: [],
+                 cursorItem,
++                ...legacyClickFields(),
+               }
+               logPacketWrite('window_click', packet)
+               ext._client!.write('window_click', packet)
+@@ -875,7 +895,8 @@ export function createMineflayerConnector(bot: MineflayerBot, options?: Mineflay
+               mouseButton,
+               mode: 0,
+               changedSlots: [],
+-              cursorItem: { present: false } as any,
++              cursorItem: emptyClickSlot(),
++              ...legacyClickFields(),
+             }
+             logPacketWrite('window_click', packet)
+             ext._client.write('window_click', packet)
