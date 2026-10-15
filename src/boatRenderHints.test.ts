@@ -44,7 +44,8 @@ function makeWorld (blocks: Record<string, number | StubBlock | null>) {
 
 const boatEntity = {
   name: 'oak_boat',
-  position: new Vec3(0, 62.2, 0),
+  // afloat on still water at y 62: the hull's top above the surface (62 + 8/9), its bottom below
+  position: new Vec3(0, 62.43, 0),
   width: 1.375,
   height: 0.5625,
 }
@@ -60,7 +61,7 @@ test('local boat patch visible only in IN_WATER status', () => {
 
 test('remote boat patch visible on source water', () => {
   const world = makeWorld({
-    '0,62,0': makeBlock(waterId, { level: 7 }),
+    '0,62,0': makeBlock(waterId, { level: 0 }),
   })
   expect(getRemoteBoatWaterPatchVisible(boatEntity, world, { waterId, flowingWaterId })).toBe(true)
 })
@@ -77,6 +78,14 @@ test('remote boat patch hidden on flowing water cover', () => {
   const world = makeWorld({
     '0,62,0': waterId,
     '0,63,0': makeBlock(flowingWaterId, { level: 3 }),
+  })
+  expect(getRemoteBoatWaterPatchVisible(boatEntity, world, { waterId, flowingWaterId })).toBe(false)
+})
+
+test('remote boat patch hidden over shallow flowing water', () => {
+  // level 7 flowing water is 1/9 of a block high: below the hull at 62.43
+  const world = makeWorld({
+    '0,62,0': makeBlock(flowingWaterId, { level: 7 }),
   })
   expect(getRemoteBoatWaterPatchVisible(boatEntity, world, { waterId, flowingWaterId })).toBe(false)
 })
@@ -99,7 +108,7 @@ test('remote boat patch hidden for waterlogged full block at hull', () => {
   const world = makeWorld({
     '0,62,0': makeBlock(stoneId, { waterlogged: true }),
   })
-  expect(getRemoteBoatWaterPatchVisible(boatEntity, world, { waterId, flowingWaterId })).toBe(false)
+  expect(getRemoteBoatWaterPatchVisible({ ...boatEntity, position: new Vec3(0, 62.2, 0) }, world, { waterId, flowingWaterId })).toBe(false)
 })
 
 test('buildEntityRenderHints marks local vehicle and water patch', () => {
@@ -113,7 +122,7 @@ test('buildEntityRenderHints marks local vehicle and water patch', () => {
     localVehicle: localBoat,
     localBoatStatus: BoatStatus.IN_WATER,
     horseControllerActive: false,
-    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 7 }) }),
+    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }),
     waterIds: { waterId, flowingWaterId },
     version: '1.17.1',
   })
@@ -128,7 +137,7 @@ test('buildEntityRenderHints keeps remote boat on ordinary tween policy inputs',
     localVehicle: { ...boatEntity, id: 1 },
     localBoatStatus: BoatStatus.IN_WATER,
     horseControllerActive: false,
-    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 7 }) }),
+    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }),
     waterIds: { waterId, flowingWaterId },
     version: '1.17.1',
   })
@@ -347,7 +356,7 @@ test('local boat does not set horse vertical camera lock', () => {
     localVehicle: localBoat,
     localBoatStatus: BoatStatus.IN_WATER,
     horseControllerActive: true,
-    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 7 }) }),
+    world: makeWorld({ '0,62,0': makeBlock(waterId, { level: 0 }) }),
     waterIds: { waterId, flowingWaterId },
     version: '1.17.1',
   })

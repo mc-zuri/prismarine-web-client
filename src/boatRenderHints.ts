@@ -106,13 +106,15 @@ function isSourceWater (block: BlockLike, ids: WaterIds): boolean {
 }
 
 function getFluidHeight (block: BlockLike, world: WorldLike, pos: Vec3, ids: WaterIds): number {
+  // FluidState.getHeight: a full block under the same fluid (water and flowing water are the same fluid)
   const above = world.getBlock(pos.offset(0, 1, 0))
-  if (above && isWaterBlock(above, ids) && (above.type === block.type || above.getProperties?.().waterlogged)) {
+  if (above && isWaterBlock(above, ids)) {
     return 1
   }
   if (isWaterBlock(block, ids)) {
+    // FluidState.getOwnHeight: amount / 9, 8 for a source or falling water, 8 - level for flowing water
     const level = Number(block.getProperties?.().level ?? 0)
-    return 1 - level / 9
+    return (level === 0 || level >= 8 ? 8 : 8 - level) / 9
   }
   return 0
 }
