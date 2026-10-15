@@ -226,7 +226,8 @@
       "pixelarticons@1.8.1": "patches/pixelarticons@1.8.1.patch",
       "mineflayer-item-map-downloader@1.2.0": "patches/mineflayer-item-map-downloader@1.2.0.patch",
       "minecraft-protocol": "patches/minecraft-protocol@1.68.0.patch",
-      "@nxg-org/mineflayer-auto-jump@0.8.0": "patches/@nxg-org__mineflayer-auto-jump@0.8.0.patch"
+      "@nxg-org/mineflayer-auto-jump@0.8.0": "patches/@nxg-org__mineflayer-auto-jump@0.8.0.patch",
+      "mcraft-fun-mineflayer@0.1.23": "patches/mcraft-fun-mineflayer@0.1.23.patch"
     },
     "ignoredBuiltDependencies": [
       "canvas",

@@ -1,0 +1,20 @@
+diff --git a/build/replicator/entity.js b/build/replicator/entity.js
+index 74fbeaab289f015c4328f105d883d6d289a9f8b3..30a2fc54aea051dbdb17bc2dcba9720601d8a70e 100644
+--- a/build/replicator/entity.js
++++ b/build/replicator/entity.js
+@@ -145,6 +145,15 @@ const entityReplicator = (bot) => {
+             for (const [id, entity] of Object.entries(bot.entities)) {
+                 const entityPackets = getAllEntityPackets(id);
+                 for (const [packetType, packet] of entityPackets) {
++                    if (packet === entityPackets[0][1] && 'x' in packet) {
++                        // the position mineflayer tracked (the relative moves above are fixed-point, and nested in steps from 26.1)
++                        const pos = entity.position;
++                        if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y) && Number.isFinite(pos.z)) {
++                            const scale = versionToNumber(bot.version) < versionToNumber('1.9') ? 32 : 0;
++                            client.write(packetType, { ...packet, x: scale ? Math.floor(pos.x * scale) : pos.x, y: scale ? Math.floor(pos.y * scale) : pos.y, z: scale ? Math.floor(pos.z * scale) : pos.z });
++                            continue;
++                        }
++                    }
+                     client.write(packetType, packet);
+                 }
+             }

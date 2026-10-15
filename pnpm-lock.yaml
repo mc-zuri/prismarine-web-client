@@ -30,6 +30,9 @@ patchedDependencies:
   '@nxg-org/mineflayer-auto-jump@0.8.0':
     hash: 647cd85b11b157ea5c855c8251b007b8263d92f127c491b601f26a3549e91941
     path: patches/@nxg-org__mineflayer-auto-jump@0.8.0.patch
+  mcraft-fun-mineflayer@0.1.23:
+    hash: bf58a862168aa4d5bc2f51437e72812dc6812eb70f7410543273ffb4b5724306
+    path: patches/mcraft-fun-mineflayer@0.1.23.patch
   minecraft-protocol:
     hash: 678c21f8f7154c8c80763d513bba634e4c87f0308f3ff092ded29a9e55f23b86
     path: patches/minecraft-protocol@1.68.0.patch
@@ -160,7 +163,7 @@ importers:
         version: 4.17.21
       mcraft-fun-mineflayer:
         specifier: ^0.1.23
-        version: 0.1.23(encoding@0.1.13)(mineflayer@file:../mineflayer(encoding@0.1.13))
+        version: 0.1.23(patch_hash=bf58a862168aa4d5bc2f51437e72812dc6812eb70f7410543273ffb4b5724306)(encoding@0.1.13)(mineflayer@file:../mineflayer(encoding@0.1.13))
       minecraft-data:
         specifier: link:../../mineflayer-monorepo/packages/minecraft-data
         version: link:../../mineflayer-monorepo/packages/minecraft-data
@@ -15578,7 +15581,7 @@ snapshots:
     dependencies:
       minecraft-data: link:../../mineflayer-monorepo/packages/minecraft-data
 
-  mcraft-fun-mineflayer@0.1.23(encoding@0.1.13)(mineflayer@file:../mineflayer(encoding@0.1.13)):
+  mcraft-fun-mineflayer@0.1.23(patch_hash=bf58a862168aa4d5bc2f51437e72812dc6812eb70f7410543273ffb4b5724306)(encoding@0.1.13)(mineflayer@file:../mineflayer(encoding@0.1.13)):
     dependencies:
       '@zardoy/flying-squid': 0.0.49(encoding@0.1.13)
       exit-hook: 2.2.1
