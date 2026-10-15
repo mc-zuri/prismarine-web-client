@@ -228,11 +228,13 @@ const appConfig = defineConfig({
                     }
                     // childProcess.execSync(['tsx', './scripts/genLargeDataAliases.ts', ...(SINGLE_FILE_BUILD ? ['--compressed'] : [])].join(' '), { stdio: 'inherit' })
                     genLargeDataAliases(SINGLE_FILE_BUILD || process.env.ALWAYS_COMPRESS_LARGE_DATA === 'true')
-                    fsExtra.copySync('./node_modules/mc-assets/dist/other-textures/latest/entity', './dist/textures/entity')
-                    // older versions' entity textures (only the ones that changed since), requested as textures/<version>/entity/...
+                    // entity, painting and armor (models/armor, before 1.21.2) textures, requested as textures/<folder>/...;
+                    // older versions only have the ones that changed since, requested as textures/<version>/<folder>/...
                     for (const version of fs.readdirSync('./node_modules/mc-assets/dist/other-textures')) {
-                        const entityDir = `./node_modules/mc-assets/dist/other-textures/${version}/entity`
-                        if (version !== 'latest' && fs.existsSync(entityDir)) fsExtra.copySync(entityDir, `./dist/textures/${version}/entity`)
+                        for (const folder of ['entity', 'painting', 'models']) {
+                            const dir = `./node_modules/mc-assets/dist/other-textures/${version}/${folder}`
+                            if (fs.existsSync(dir)) fsExtra.copySync(dir, version === 'latest' ? `./dist/textures/${folder}` : `./dist/textures/${version}/${folder}`)
+                        }
                     }
                     // entity models exported from the game, one file per export; the renderer's worker fetches the one the world reads
                     if (fs.existsSync('./node_modules/mc-assets/dist/entityModels')) {

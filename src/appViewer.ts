@@ -253,6 +253,27 @@ const connectAppWorldViewToBot = () => {
     }
   })
 
+  // before 1.19 paintings spawn with their own packet, which mineflayer keeps out of bot.entities: the title (1.8 - 1.12)
+  // or motive id (1.13 - 1.18) is the variant, the direction is 2D, the location the painting's block
+  const legacyPaintings = new Set<number>()
+  bot._client.on('spawn_entity_painting', (packet) => {
+    legacyPaintings.add(packet.entityId)
+    appViewer.worldView?.emit('entity', {
+      id: packet.entityId,
+      name: 'painting',
+      type: 'object',
+      pos: new Vec3(packet.location.x, packet.location.y, packet.location.z),
+      paintingVariant: packet.title,
+      paintingDirection: packet.direction,
+    } as any)
+  })
+  bot._client.on('entity_destroy', ({ entityIds }) => {
+    for (const id of entityIds ?? []) {
+      if (legacyPaintings.delete(id)) appViewer.worldView?.emit('entity', { id, delete: true })
+    }
+  })
+  bot.on('respawn', () => legacyPaintings.clear())
+
   for (const [evt, listener] of Object.entries(eventListeners)) {
     bot.on(evt as any, listener)
   }
