@@ -257,6 +257,8 @@ const connectAppWorldViewToBot = () => {
   // or motive id (1.13 - 1.18) is the variant, the direction is 2D, the location the painting's block
   const legacyPaintings = new Set<number>()
   bot._client.on('spawn_entity_painting', (packet) => {
+    // the packet is gone from 1.19 (a singleplayer server may still send one, without its fields)
+    if (!packet.location) return
     legacyPaintings.add(packet.entityId)
     appViewer.worldView?.emit('entity', {
       id: packet.entityId,
