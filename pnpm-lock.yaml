@@ -31,7 +31,7 @@ patchedDependencies:
     hash: 647cd85b11b157ea5c855c8251b007b8263d92f127c491b601f26a3549e91941
     path: patches/@nxg-org__mineflayer-auto-jump@0.8.0.patch
   '@zardoy/flying-squid@0.0.122':
-    hash: 487b40c32045ceba2dd1e5a48621daabef0132b486cd861d01ba8f7dc374cdbf
+    hash: b361c2c02a32283f264b36dfd4d4c31c22bbc496cfb67d262acf65d307b35a0f
     path: patches/@zardoy__flying-squid@0.0.122.patch
   mcraft-fun-mineflayer@0.1.23:
     hash: bf58a862168aa4d5bc2f51437e72812dc6812eb70f7410543273ffb4b5724306
@@ -142,7 +142,7 @@ importers:
         version: 10.1.6
       flying-squid:
         specifier: npm:@zardoy/flying-squid@^0.0.122
-        version: '@zardoy/flying-squid@0.0.122(patch_hash=487b40c32045ceba2dd1e5a48621daabef0132b486cd861d01ba8f7dc374cdbf)(encoding@0.1.13)'
+        version: '@zardoy/flying-squid@0.0.122(patch_hash=b361c2c02a32283f264b36dfd4d4c31c22bbc496cfb67d262acf65d307b35a0f)(encoding@0.1.13)'
       framer-motion:
         specifier: ^12.9.2
         version: 12.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -12274,7 +12274,7 @@ snapshots:
       '@types/emscripten': 1.40.0
       tslib: 1.14.1
 
-  '@zardoy/flying-squid@0.0.122(patch_hash=487b40c32045ceba2dd1e5a48621daabef0132b486cd861d01ba8f7dc374cdbf)(encoding@0.1.13)':
+  '@zardoy/flying-squid@0.0.122(patch_hash=b361c2c02a32283f264b36dfd4d4c31c22bbc496cfb67d262acf65d307b35a0f)(encoding@0.1.13)':
     dependencies:
       '@tootallnate/once': 2.0.0
       chalk: 5.4.1

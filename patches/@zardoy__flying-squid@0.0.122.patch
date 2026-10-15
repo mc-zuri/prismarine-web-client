@@ -1,5 +1,33 @@
+diff --git a/dist/lib/modules/playerLogin.js b/dist/lib/modules/playerLogin.js
+index 59f2ee4..7cbb691 100644
+--- a/dist/lib/modules/playerLogin.js
++++ b/dist/lib/modules/playerLogin.js
+@@ -493,6 +493,9 @@ const player = async function (player, serv, settings) {
+         player.sendSelfPosition(false);
+         player.sendAbilities();
+         sendWorldInfo();
++        // PlayerList.placeNewPlayer (1.20.3+): the level's chunks start; from 1.21.4 the client's player waits for them
++        if (mcData.version['>=']('1.20.3'))
++            player._client.write('game_state_change', { reason: 13, gameMode: 0 });
+         if (!settings.noInitialChunksSend) {
+             const distance = settings['view-distance'];
+             player.setLoadingStatus(`Getting initial chunks (distance = ${distance})`);
+diff --git a/dist/lib/modules/respawn.js b/dist/lib/modules/respawn.js
+index 02aa93d..8f0f9ff 100644
+--- a/dist/lib/modules/respawn.js
++++ b/dist/lib/modules/respawn.js
+@@ -90,6 +90,9 @@ const player = function (player, serv) {
+                     isFlat: false,
+                     copyMetadata: false
+                 });
++                // PlayerList.respawn (1.20.3+): the level's chunks start again; from 1.21.4 the client's player waits for them
++                if (serv.mcData.version['>=']('1.20.3'))
++                    player._client.write('game_state_change', { reason: 13, gameMode: 0 });
+                 player.sendSelfPosition();
+                 player.updateHealth(20);
+                 player.nearbyEntities = [];
 diff --git a/dist/lib/modules/world.js b/dist/lib/modules/world.js
-index 32249b62cd35268d16084dd6a18e607c1b3d59ec..33c8a86b72bd2f93aeb87971a2e20aee1f4a336f 100644
+index 32249b6..0539e93 100644
 --- a/dist/lib/modules/world.js
 +++ b/dist/lib/modules/world.js
 @@ -597,6 +597,15 @@ const player = function (player, serv, settings) {
@@ -18,3 +46,13 @@ index 32249b62cd35268d16084dd6a18e607c1b3d59ec..33c8a86b72bd2f93aeb87971a2e20aee
          player._client.write('spawn_position', {
              location: player.spawnPoint,
              angle: 0,
+@@ -630,6 +639,9 @@ const player = function (player, serv, settings) {
+             isFlat: false,
+             copyMetadata: true
+         });
++        // PlayerList.respawn (1.20.3+): the level's chunks start again; from 1.21.4 the client's player waits for them
++        if (serv.mcData.version['>=']('1.20.3'))
++            player._client.write('game_state_change', { reason: 13, gameMode: 0 });
+         await player.findSpawnPoint();
+         player.position = player.spawnPoint;
+         player.sendSpawnPosition();
