@@ -1,0 +1,20 @@
+diff --git a/dist/lib/modules/world.js b/dist/lib/modules/world.js
+index 32249b62cd35268d16084dd6a18e607c1b3d59ec..33c8a86b72bd2f93aeb87971a2e20aee1f4a336f 100644
+--- a/dist/lib/modules/world.js
++++ b/dist/lib/modules/world.js
+@@ -597,6 +597,15 @@ const player = function (player, serv, settings) {
+             .catch((err) => setTimeout(() => { throw err; }));
+     };
+     player.sendSpawnPosition = () => {
++        // 1.21.9 sends the respawn data: the position with its dimension, a yaw and a pitch
++        if (serv.supportFeature('spawnPositionIsGlobal')) {
++            player._client.write('spawn_position', {
++                globalPos: { dimensionName: player.world === serv.netherworld ? 'minecraft:the_nether' : 'minecraft:overworld', location: player.spawnPoint },
++                yaw: 0,
++                pitch: 0,
++            });
++            return;
++        }
+         player._client.write('spawn_position', {
+             location: player.spawnPoint,
+             angle: 0,
