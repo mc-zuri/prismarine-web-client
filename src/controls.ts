@@ -225,11 +225,8 @@ contro.on('movementUpdate', ({ vector, soleVector, gamepadIndex }) => {
 let lastCommandTrigger = null as { command: string, time: number } | null
 
 const secondActionActivationTimeout = 300
+// (a second press of jump toggles flying in mineflayer's physics, as LocalPlayer.aiStep: it tells the server too)
 const secondActionCommands: Partial<Record<Command, () => void>> = {
-  'movement.jump' () {
-    // if (bot.game.gameMode === 'spectator') return
-    toggleFly()
-  },
   'movement.forward' () {
     setSprinting(true)
   }
@@ -824,36 +821,7 @@ document.addEventListener('keydown', (e) => {
 
 const isFlying = () => (bot as any).physicsEngineCtx?.state?.flying ?? false
 
-const startFlying = (sendAbilities = true) => {
-  if (sendAbilities) {
-    bot._client.write('abilities', {
-      flags: 2,
-    })
-  }
-  (bot.entity as any).flying = true
-}
-
-const endFlying = (sendAbilities = true) => {
-  if (!isFlying()) return
-  if (sendAbilities) {
-    bot._client.write('abilities', {
-      flags: 0,
-    })
-  }
-  (bot.entity as any).flying = false
-}
-
 export const onBotCreate = () => {
-}
-
-const toggleFly = (newState = !isFlying(), sendAbilities?: boolean) => {
-  if (!bot.entity.canFly) return
-
-  if (newState) {
-    startFlying(sendAbilities)
-  } else {
-    endFlying(sendAbilities)
-  }
 }
 
 const physicsFlyingCheck = () => {
