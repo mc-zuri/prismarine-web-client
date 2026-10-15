@@ -229,6 +229,11 @@ const appConfig = defineConfig({
                     // childProcess.execSync(['tsx', './scripts/genLargeDataAliases.ts', ...(SINGLE_FILE_BUILD ? ['--compressed'] : [])].join(' '), { stdio: 'inherit' })
                     genLargeDataAliases(SINGLE_FILE_BUILD || process.env.ALWAYS_COMPRESS_LARGE_DATA === 'true')
                     fsExtra.copySync('./node_modules/mc-assets/dist/other-textures/latest/entity', './dist/textures/entity')
+                    // older versions' entity textures (only the ones that changed since), requested as textures/<version>/entity/...
+                    for (const version of fs.readdirSync('./node_modules/mc-assets/dist/other-textures')) {
+                        const entityDir = `./node_modules/mc-assets/dist/other-textures/${version}/entity`
+                        if (version !== 'latest' && fs.existsSync(entityDir)) fsExtra.copySync(entityDir, `./dist/textures/${version}/entity`)
+                    }
                     fsExtra.copySync('./assets/background', './dist/background')
                     fs.copyFileSync('./assets/favicon.png', './dist/favicon.png')
                     fs.copyFileSync('./assets/playground.html', './dist/playground.html')
