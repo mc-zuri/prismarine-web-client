@@ -234,6 +234,10 @@ const appConfig = defineConfig({
                         const entityDir = `./node_modules/mc-assets/dist/other-textures/${version}/entity`
                         if (version !== 'latest' && fs.existsSync(entityDir)) fsExtra.copySync(entityDir, `./dist/textures/${version}/entity`)
                     }
+                    // entity models exported from the game, one file per export; the renderer's worker fetches the one the world reads
+                    if (fs.existsSync('./node_modules/mc-assets/dist/entityModels')) {
+                        fsExtra.copySync('./node_modules/mc-assets/dist/entityModels', './dist/entity-models')
+                    }
                     fsExtra.copySync('./assets/background', './dist/background')
                     fs.copyFileSync('./assets/favicon.png', './dist/favicon.png')
                     fs.copyFileSync('./assets/playground.html', './dist/playground.html')
