@@ -108,6 +108,13 @@ const connectAppWorldViewToBot = () => {
     }
   })
 
+  // where the game shows the entity this tick: its interpolation's step toward the server's moves while one runs
+  // (mineflayer's entityInterpolation), else its position (the server's, or where the client's own physics moved it)
+  const shownPosition = (e) => {
+    const state = e.interpolation
+    return state && (state.steps > 0 || state.minecart) && e.interpolatedPosition ? e.interpolatedPosition : e.position
+  }
+
   const emitEntity = (e, name = 'entity', eventMetadata = {}) => {
     if (!e) return
     if (e === bot.entity) {
@@ -132,10 +139,15 @@ const connectAppWorldViewToBot = () => {
       version: bot.version,
       entityMetadataKeys: bot.registry.entitiesByName[e.name]?.metadataKeys,
     })
+    const shown = shownPosition(e)
     appViewer.worldView?.emit(name as any, {
       ...e,
       ...eventMetadata,
-      pos: e.position,
+      position: shown,
+      pos: shown,
+      // the position is the shown one of a client tick: the renderer moves to it over one tick, as the game draws
+      // between an entity's last two ticks
+      tickInterpolated: !!(bot as any).entityInterpolation,
       username: e.username,
       team: bot.teamMap[e.username] || bot.teamMap[e.uuid],
       renderHints,
@@ -279,6 +291,20 @@ const connectAppWorldViewToBot = () => {
   for (const [evt, listener] of Object.entries(eventListeners)) {
     bot.on(evt as any, listener)
   }
+
+  // each client tick the entities step toward the server's moves: those shown somewhere else are drawn there
+  const lastShown = new Map<number, string>()
+  bot.on('entityInterpolationTick' as any, () => {
+    for (const e of Object.values(bot.entities)) {
+      if (e === bot.entity || !e.name) continue
+      const { x, y, z } = shownPosition(e)
+      const key = `${x},${y},${z}`
+      if (lastShown.get(e.id) === key) continue
+      lastShown.set(e.id, key)
+      emitEntity(e, 'entityMoved', {})
+    }
+  })
+  bot.on('entityGone', (e) => { lastShown.delete(e.id) })
 
   // eslint-disable-next-line guard-for-in
   for (const id in bot.entities) {
