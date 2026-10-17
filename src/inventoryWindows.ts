@@ -57,8 +57,28 @@ export const onModalClose = (fn: () => void) => {
 export const onGameLoad = () => {
   PrismarineItem = PItem(bot.version)
 
+  // A mount's screen (open_horse_window) is one mineflayer window type, 'HorseWindow', for every mount; the layout
+  // depends on the mount, which only the packet names. This listener runs before mineflayer's, which emits windowOpen.
+  let horseWindowEntityId: number | undefined
+  bot._client.prependListener('open_horse_window', (packet: { entityId: number }) => {
+    horseWindowEntityId = packet.entityId
+  })
+  const mountWindowType = (inventoryStart: number): string => {
+    const mount = horseWindowEntityId === undefined ? undefined : bot.entities[horseWindowEntityId]
+    const name = mount?.name ?? ''
+    // the saddle (0) and body armor (1) slots come first; a chest's slots follow them
+    const chested = inventoryStart > 2
+    console.debug('[inventory] mount screen', { entityId: horseWindowEntityId, name, inventoryStart })
+    if (/llama/i.test(name)) return 'llama'
+    // only donkeys, mules and llamas carry a chest
+    if (chested) return 'donkey'
+    // horses, skeleton and zombie horses, unchested donkeys and mules, camels, nautiluses: saddle and armor only
+    return 'horse'
+  }
+
   /** Maps mineflayer window type + inventoryStart to an exact key in the new library's registry */
   const mapWindowType = (type: string, inventoryStart: number): string => {
+    if (type === 'HorseWindow') return mountWindowType(inventoryStart)
     // minecraft:container size is determined by inventoryStart
     if (type === 'minecraft:container') {
       if (inventoryStart === 45 - 9 * 4) return 'generic_9x1'
