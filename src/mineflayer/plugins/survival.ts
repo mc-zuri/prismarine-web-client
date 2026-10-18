@@ -4,10 +4,11 @@
 import type { Bot } from 'mineflayer'
 import { createPlugin as createPathfinder, goals } from '@nxg-org/mineflayer-pathfinder'
 import { createPlugin as createSurvival, MILESTONES, type MilestoneId, type PlayResult, type SaveStore } from 'mineflayer-survival'
-import { proxy } from 'valtio'
+import { proxy, subscribe } from 'valtio'
 import { displayClientChat } from '../../botUtils'
 import { lastConnectOptions } from '../../appStatus'
 import { mineflayerPluginHudState } from '../../react/MineflayerPluginHud'
+import { activeModalStack, hideModal, showModal } from '../../globalState'
 
 export const survivalState = proxy({
   /** what drives the bot: survival's play, a /goto, or nothing (the player) */
@@ -232,6 +233,65 @@ export const survivalCommands = [
   },
 ]
 
+/**
+ * The inventory screen while the bot clicks in the player's menu, as a player has it open to: mineflayer opens and closes
+ * it around a craft in the player's grid (bot.openInventoryScreen, inventoryScreenOpen / inventoryScreenClose events),
+ * and while survival or /goto drives, any other click in the player's menu opens it too, closed once 20 ticks go by
+ * without one and nothing is on the cursor. The screen shown is the web client's own (player_win:player); mineflayer
+ * sends the close of menu 0, so the screen doesn't send it again (inventoryScreenFromBot.closing).
+ */
+export const inventoryScreenFromBot = { shown: false, closing: false }
+const PLAYER_SCREEN = 'player_win:player'
+const playerScreen = () => activeModalStack.find(m => m.reactType === PLAYER_SCREEN)
+
+const showInventoryScreen = () => {
+  if (activeModalStack.length > 0) return
+  showModal({ reactType: PLAYER_SCREEN })
+  inventoryScreenFromBot.shown = !!playerScreen()
+}
+
+const hideInventoryScreen = () => {
+  if (!inventoryScreenFromBot.shown) return
+  inventoryScreenFromBot.shown = false
+  const modal = playerScreen()
+  if (!modal) return
+  // (the screen's unmount, a render later, takes the flag)
+  inventoryScreenFromBot.closing = true
+  setTimeout(() => { inventoryScreenFromBot.closing = false }, 1000)
+  hideModal(modal, undefined, { force: true })
+}
+
+// the player closed the screen the bot had open (Esc): it sent the close of menu 0, and the bot's driving stops
+subscribe(activeModalStack, () => {
+  if (!inventoryScreenFromBot.shown || playerScreen()) return
+  inventoryScreenFromBot.shown = false
+  void stopDriving('inventory screen closed')
+})
+
+const inventoryScreenForClicks = (bot: Bot) => {
+  const IDLE_TICKS = 20
+  let idle = -1
+  const click = bot.clickWindow
+  bot.clickWindow = async (...args) => {
+    if (survivalState.driving && !bot.currentWindow && !bot.inventoryScreenOpen && !activeModalStack.length) {
+      bot.openInventoryScreen()
+    }
+    if (bot.inventoryScreenOpen) idle = 0
+    return click.apply(bot, args)
+  }
+  bot.on('physicsTick', () => {
+    if (idle < 0 || !bot.inventoryScreenOpen) return
+    if (++idle < IDLE_TICKS || bot.inventory.selectedItem) return
+    idle = -1
+    bot.closeInventoryScreen()
+  })
+  bot.on('inventoryScreenOpen', showInventoryScreen)
+  bot.on('inventoryScreenClose', () => {
+    idle = -1
+    hideInventoryScreen()
+  })
+}
+
 /** the pathfinder and survival on the bot, idle: the reflexes off until /survival start */
 export default (bot: Bot) => {
   survivalState.driving = null
@@ -244,6 +304,8 @@ export default (bot: Bot) => {
     if (!bot.pathfinder) bot.loadPlugin(createPathfinder())
     bot.loadPlugin(createSurvival({ loadPathfinder: false, reflexes: { enabled: false } }))
   })
+  inventoryScreenFromBot.shown = false
+  inventoryScreenForClicks(bot)
   bot.once('end', () => {
     playAbort?.abort(new Error('disconnected'))
     survivalState.driving = null

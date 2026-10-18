@@ -18,6 +18,7 @@ import { options } from '../../optionsStorage'
 import { getJeiItems, getItemRecipes, getItemUsages } from '../../inventoryWindows'
 import { PlayerModelViewer } from './PlayerModelViewer'
 import { buildItemMapper, textureConfig, clearInventoryCaches, formatWindowTitle } from './sharedConnectorSetup'
+import { inventoryScreenFromBot } from '../../mineflayer/plugins/survival'
 
 export { clearInventoryCaches } from './sharedConnectorSetup'
 
@@ -67,6 +68,11 @@ export const Inventory = () => {
   useEffect(() => {
     if (!connector) return
     return () => {
+      // the bot's own inventory screen closing: mineflayer sent the close already
+      if (inventoryScreenFromBot.closing) {
+        inventoryScreenFromBot.closing = false
+        return
+      }
       void connector.sendAction({ type: 'close' })
     }
   }, [connector])
