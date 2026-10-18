@@ -132,6 +132,21 @@ For **proxy only**, use **[mwc-proxy](https://github.com/zardoy/mwc-proxy)** (in
 
 There are many many settings, that are not exposed in the UI yet. You can find or change them by opening the browser console and typing `options`. You can also change them by typing `options.<setting_name> = <value>`.
 
+### Survival Bot (mineflayer-survival)
+
+In the `E:\gen` workspace the client loads the pathfinder (`@nxg-org/mineflayer-pathfinder`) and the `mineflayer-survival` plugin on every bot. Both stay idle until you ask: nothing plays and no reflexes run until `/survival start`. The commands work in singleplayer and on servers (tested on 1.21.11 and 26.3):
+
+- `/survival start [until <milestone>]` plays from where you are, milestone by milestone (`wood`, `stone`, `food`, `base`, `iron`, `diamonds`, `enchanting`, `nether`, `eyes`, `end`). Progress, plans and milestones go to the chat, and a line at the top left shows the milestone and the task.
+- `/survival stop` stops play (or a `/goto`).
+- `/survival status` shows the milestone, the task, the reflex running and an inventory summary.
+- `/survival reflexes on|off` sets whether the reflexes (eating, fighting or fleeing, creepers, lava, drowning, armor, totem) run while play does (default on). They never run while play is stopped.
+- `/survival reset` forgets the save of this server and player. The save (what the bot remembers of the world, and the milestones reached) is in `localStorage`, under `mineflayer-survival:<server>:<username>`, and a new `/survival start` resumes from it.
+- `/goto <x> <y> <z>` walks to a block with the pathfinder alone, and `/goto cancel` stops it.
+
+While the bot drives (play or `/goto`), the mouse doesn't turn the camera, and **the first movement key you press (WASD, jump, sneak or sprint) stops it**. That press is taken for the stop, so the next one moves you.
+
+The packages come from the workspace through `file:` overrides in `package.json`, which install a copy. **After changing mineflayer, survival or the pathfinder, rerun `pnpm web:install` from `E:\gen`.** It builds physics-utils, the pathfinder and survival, then reinstalls, and the reinstall copies the changed packages again. Stop `pnpm web:start` first: the dev server rebuilding on a half-copied package fails until it's restarted.
+
 ### Console
 
 To open the console, press `F12`. On mobile, you can type `#dev` in the browser address bar; the page won't reload, and you'll see a button to open the console. This lets you change advanced settings, see logs, and access global variables (described below).

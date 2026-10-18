@@ -9,6 +9,7 @@ import { saveServer } from './flyingSquidUtils'
 import { setLoadingScreenStatus } from './appStatus'
 import { displayClientChat } from './botUtils'
 import { miscUiState } from './globalState'
+import { survivalCommands } from './mineflayer/plugins/survival'
 
 const notImplemented = () => {
   return 'Not implemented yet'
@@ -138,7 +139,8 @@ export const commands: Array<{
     invoke () {
       getThreeJsRendererMethods()?.downloadMesherLog()
     }
-  }
+  },
+  ...survivalCommands
 ]
 //@ts-format-ignore-endregion
 

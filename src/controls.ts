@@ -25,6 +25,7 @@ import { completeResourcepackPackInstall, copyServerResourcePackToRegular, resou
 import { showNotification } from './react/NotificationProvider'
 import { lastConnectOptions } from './appStatus'
 import { onCameraMove, onControInit } from './cameraRotationControls'
+import { takePlayerMovementInput } from './mineflayer/plugins/survival'
 import { createNotificationProgressReporter } from './core/progressReporter'
 import { appStorage } from './react/appStorageProvider'
 import { switchGameMode } from './packetsReplay/replayPackets'
@@ -172,6 +173,8 @@ export const takeScreenshotAction = () => {
 contro.on('movementUpdate', ({ vector, soleVector, gamepadIndex }) => {
   miscUiState.usingGamepadInput = gamepadIndex !== undefined
   if (!bot || !isGameActive(false) || isSpectatingEntity()) return
+  // survival or /goto drives the bot: a press stops it (the next one moves), and no update undoes the bot's keys
+  if (takePlayerMovementInput(Object.values(vector).some(v => v !== undefined && Math.abs(v) >= 0.3))) return
 
   // if (viewer.world.freeFlyMode) {
   //   // Create movement vector from input
@@ -335,6 +338,7 @@ const onTriggerOrReleased = (command: Command, pressed: boolean) => {
   if (!bot || !isGameActive(false)) return
 
   if (stringStartsWith(command, 'movement')) {
+    if (takePlayerMovementInput(pressed)) return
     switch (command) {
       case 'movement.jump':
         if (isSpectatingEntity()) break

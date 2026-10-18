@@ -6,6 +6,7 @@ import { options } from './optionsStorage'
 import { hideNotification, notificationProxy } from './react/NotificationProvider'
 import { pointerLock } from './utils'
 import { updateMotion, initMotionTracking } from './react/uiMotion'
+import { isBotDriving } from './mineflayer/plugins/survival'
 
 let lastMouseMove: number
 
@@ -21,6 +22,8 @@ export function onCameraMove (e: MouseEvent | CameraMoveEvent) {
   if (e.type === 'mousemove' && !document.pointerLockElement) return
   e.stopPropagation?.()
   if (getPlayerStateUtils(appViewer.playerState.reactive).isSpectatingEntity()) return
+  // survival or /goto turns the bot itself
+  if (isBotDriving()) return
   const now = performance.now()
   // todo: limit camera movement for now to avoid unexpected jumps
   if (now - lastMouseMove < 4 && !options.preciseMouseInput) return
