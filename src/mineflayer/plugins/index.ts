@@ -6,6 +6,7 @@ import { localRelayServerPlugin } from './packetsRecording'
 import ping from './ping'
 import webFeatures from './webFeatures'
 import survival from './survival'
+import mineflayerActionAnimations from './mineflayerActionAnimations'
 
 // register
 webFeatures()
@@ -18,6 +19,7 @@ customEvents.on('mineflayerBotCreated', () => {
     bot.loadPlugin(ping)
   }
   bot.loadPlugin(mouse)
+  bot.loadPlugin(mineflayerActionAnimations)
   bot.loadPlugin(survival)
   if (!lastConnectOptions.value!.worldStateFileContents) {
     bot.loadPlugin(localRelayServerPlugin)
