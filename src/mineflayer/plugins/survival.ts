@@ -205,12 +205,35 @@ export const survivalCommands = [
           if (survivalState.driving === 'survival') setReflexes(survivalState.reflexes)
           say(`reflexes ${args[0]} while survival runs`)
           return
+        case 'dump': {
+          // the last stuck report's diagnosis, and a report of the bot as it is now (bot.survival.diagnostics.dump()):
+          // the diagnoses in chat, the reports' JSON in the console (tens of kB each, too long for chat)
+          const diagnostics = bot.survival?.diagnostics
+          if (!diagnostics) {
+            say('no diagnostics on this bot', 'red')
+            return
+          }
+          const last = diagnostics.lastReports(1)[0]
+          const report = diagnostics.dump('/survival dump')
+          if (last) {
+            say(`last report (${last.kind}, tick ${last.tick}): ${last.diagnosis}`, 'yellow')
+            console.log('[survival] last report:', last.diagnosis, last)
+            console.log(JSON.stringify(last))
+          } else {
+            say('no stuck report yet')
+          }
+          say(`now: ${report.diagnosis}`)
+          console.log('[survival] dump:', report.diagnosis, report)
+          console.log(JSON.stringify(report))
+          say("the reports' JSON is in the console")
+          return
+        }
         case 'reset':
           localStorage.removeItem(saveKey())
           say('forgot the save of this server and player (the memory and the milestones reached)')
           return
         default:
-          say('/survival start [until <milestone>] | stop | status | reflexes on|off | reset', 'yellow')
+          say('/survival start [until <milestone>] | stop | status | dump | reflexes on|off | reset', 'yellow')
       }
     }
   },
