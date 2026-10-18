@@ -216,7 +216,8 @@
       "react": "^18.2.0",
       "prismarine-chunk": "file:../../github/prismarine-chunk",
       "mc-assets": "file:../../github/mc-assets",
-      "prismarine-item": "latest",
+      "prismarine-item": "file:../../mineflayer-monorepo/packages/prismarine-item",
+      "prismarine-windows": "file:../../mineflayer-monorepo/packages/prismarine-windows",
       "valtio": "1.13.2",
       "mineflayer-mouse": "file:../../github/mineflayer-mouse"
     },
