@@ -3,13 +3,14 @@
 // /survival start, and a movement key pressed while the bot drives (play or /goto) stops it and hands the controls back.
 import type { Bot } from 'mineflayer'
 import { createPlugin as createPathfinder, goals } from '@nxg-org/mineflayer-pathfinder'
-import { createPlugin as createSurvival, MILESTONES, type MilestoneId, type PlayResult, type SaveStore } from 'mineflayer-survival'
+import { createPlugin as createSurvival, startRecorder, MILESTONES, type MilestoneId, type PlayResult, type SaveStore } from 'mineflayer-survival'
 import { proxy, subscribe } from 'valtio'
 import { displayClientChat } from '../../botUtils'
 import { lastConnectOptions } from '../../appStatus'
 import { mineflayerPluginHudState } from '../../react/MineflayerPluginHud'
 import { activeModalStack, hideModal, showModal } from '../../globalState'
 import { respawnWhileDriving } from './survivalRespawn'
+import { autoRecording, describeRecording, parseRecordCommand, recordingFileName } from './survivalRecord'
 
 export const survivalState = proxy({
   /** what drives the bot: survival's play, a /goto, or nothing (the player) */
@@ -106,6 +107,12 @@ const startSurvival = async (until?: MilestoneId) => {
   playAbort = abort
   setReflexes(survivalState.reflexes)
   say(`started${until ? ` until ${until}` : ''}; a movement key or /survival stop stops it`)
+  // the run recorded, a ring of the last AUTO_RECORD_BYTES, unless something records already (survivalRecord.ts)
+  const auto = autoRecording(bot.survival.recorder)
+  if (auto) {
+    startRecorder(bot, auto)
+    say(`recording the run (the last ${Math.round(auto.maxBytes / 1024 / 1024)} MB): /survival record save downloads it`)
+  }
   updateHud()
   const onMilestone = (event: { id: MilestoneId, title: string, tick: number }) => {
     say(`milestone ${event.id} reached: ${event.title} (tick ${event.tick})`, 'green')
@@ -162,6 +169,59 @@ const gotoBlock = async (x: number, y: number, z: number) => {
   } finally {
     if (survivalState.driving === 'goto') survivalState.driving = null
     updateHud()
+  }
+}
+
+/** the recording's facts for chat (its sink in memory: the blocks it dropped for room) */
+const recordingFacts = () => {
+  const rec = bot.survival?.recorder
+  return rec ? { recording: rec.recording, stats: rec.stats, dropped: (rec.sink as any).dropped } : null
+}
+
+/** the recording kept so far, downloaded as a .rec file (the block being written first handed to the sink) */
+const saveRecording = async () => {
+  const rec = bot.survival?.recorder
+  const sink = rec?.sink as any
+  if (!rec || typeof sink?.blob !== 'function') {
+    say('no recording to save (/survival record start)', 'red')
+    return
+  }
+  rec.flush()
+  const blob: Blob = await sink.blob()
+  const name = recordingFileName(lastConnectOptions.value?.server, bot.username, new Date())
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = name
+  a.click()
+  setTimeout(() => URL.revokeObjectURL(url), 10_000)
+  say(`saved ${name}: ${describeRecording(recordingFacts())}`, 'green')
+}
+
+const recordCommand = async (args: string[]) => {
+  const cmd = parseRecordCommand(args)
+  if ('error' in cmd) {
+    say(cmd.error, 'red')
+    return
+  }
+  switch (cmd.action) {
+    case 'start':
+      startRecorder(bot, { maxBytes: cmd.maxBytes })
+      say(`recording (the last ${Math.round(cmd.maxBytes / 1024 / 1024)} MB kept): /survival record save downloads it`)
+      return
+    case 'stop':
+      if (!bot.survival?.recorder?.recording) {
+        say('not recording')
+        return
+      }
+      await bot.survival.recorder.stop()
+      say(`${describeRecording(recordingFacts())}; /survival record save still downloads it`)
+      return
+    case 'save':
+      await saveRecording()
+      return
+    case 'status':
+      say(describeRecording(recordingFacts()))
   }
 }
 
@@ -229,12 +289,15 @@ export const survivalCommands = [
           say("the reports' JSON is in the console")
           return
         }
+        case 'record':
+          await recordCommand(args)
+          return
         case 'reset':
           localStorage.removeItem(saveKey())
           say('forgot the save of this server and player (the memory and the milestones reached)')
           return
         default:
-          say('/survival start [until <milestone>] | stop | status | dump | reflexes on|off | reset', 'yellow')
+          say('/survival start [until <milestone>] | stop | status | dump | reflexes on|off | reset | record start|stop|save|status', 'yellow')
       }
     }
   },
