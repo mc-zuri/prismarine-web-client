@@ -9,6 +9,7 @@ import { displayClientChat } from '../../botUtils'
 import { lastConnectOptions } from '../../appStatus'
 import { mineflayerPluginHudState } from '../../react/MineflayerPluginHud'
 import { activeModalStack, hideModal, showModal } from '../../globalState'
+import { respawnWhileDriving } from './survivalRespawn'
 
 export const survivalState = proxy({
   /** what drives the bot: survival's play, a /goto, or nothing (the player) */
@@ -329,6 +330,8 @@ export default (bot: Bot) => {
   })
   inventoryScreenFromBot.shown = false
   inventoryScreenForClicks(bot)
+  // a bot that died while play ran respawns by itself (the death screen is the player's otherwise)
+  respawnWhileDriving(bot, () => survivalState.driving === 'survival')
   bot.once('end', () => {
     playAbort?.abort(new Error('disconnected'))
     survivalState.driving = null
