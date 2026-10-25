@@ -128,10 +128,11 @@ const getNextOptionValue = (
   return !options[itemId]
 }
 
-export const OptionButton = ({ item, onClick, valueText }: {
+export const OptionButton = ({ item, onClick, valueText, inScreen = true }: {
   item: Extract<OptionMeta, { type: 'toggle' }>,
   onClick?: () => void,
   valueText?: string,
+  inScreen?: boolean,
 }) => {
   const { disabledBecauseOfSetting } = useCommonComponentsProps(item)
   useSnapshot(appStorage)
@@ -219,8 +220,8 @@ export const OptionButton = ({ item, onClick, valueText }: {
     }}
     title={disabledReason ? `${disabledReason} | ${item.tooltip}` : item.tooltip}
     disabled={disabledBecauseOfSetting || !!item.disabledReason || isLocked(item)}
-    inScreen
-    style={isChanged ? { position: 'relative', width: 150 } : { width: 150 }}
+    inScreen={inScreen}
+    style={isChanged ? { position: 'relative' } : undefined}
   >
     {isChanged && <ChangedIndicator />}
   </Button>

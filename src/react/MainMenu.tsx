@@ -4,6 +4,7 @@ import { useSnapshot } from 'valtio'
 import { haveDirectoryPicker } from '../utils'
 import { ConnectOptions } from '../connect'
 import { miscUiState } from '../globalState'
+import { optionsMeta } from '../defaultOptions'
 import {
   isRemoteSplashText,
   loadRemoteSplashText,
@@ -16,6 +17,7 @@ import styles from './mainMenu.module.css'
 import Button from './Button'
 import ButtonWithTooltip from './ButtonWithTooltip'
 import { pixelartIcons } from './PixelartIcon'
+import { OptionButton } from './OptionsItems'
 import useLongPress from './useLongPress'
 import PauseLinkButtons from './PauseLinkButtons'
 import CreditsBookButton from './CreditsBookButton'
@@ -40,6 +42,13 @@ interface Props {
 }
 
 const httpsRegex = /^https?:\/\//
+
+const physicsEngineOption = {
+  type: 'toggle',
+  id: 'physicsEngine',
+  text: optionsMeta.physicsEngine?.text,
+  tooltip: optionsMeta.physicsEngine?.tooltip,
+} as const
 
 const MainMenuBase = ({
   connectToServerAction,
@@ -194,6 +203,7 @@ const MainMenuBase = ({
         >
           Options
         </Button>
+        <OptionButton item={physicsEngineOption} inScreen={false} />
         <div className={styles['menu-row']}>
           <PauseLinkButtons />
         </div>
