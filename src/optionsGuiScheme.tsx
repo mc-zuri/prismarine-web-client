@@ -514,9 +514,8 @@ export const guiOptionsScheme: {
       custom () {
         return <Category>Physics</Category>
       },
-      nativePhysics: {
-        text: 'Native Physics (WebAssembly)',
-        tooltip: 'minecraft-physics-native moves the player, its boat and mount instead of mineflayer-physics-utils. Applies from the next connect.',
+      physicsEngine: {
+        requiresRestartWhenInGame: true,
       },
     }
   ],

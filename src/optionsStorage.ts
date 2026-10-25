@@ -44,6 +44,10 @@ const migrateOptions = (options: Partial<AppOptions & Record<string, any>>) => {
     options.rendererWorldPerformance = 'low-energy'
     delete options.lowMemoryMode
   }
+  if (options.nativePhysics) {
+    options.physicsEngine = 'native'
+    delete options.nativePhysics
+  }
   if (typeof options.multiplayerRenderDistance === 'number') {
     const mp = options.multiplayerRenderDistance
     options.renderDistance = Math.max(options.renderDistance!, mp)

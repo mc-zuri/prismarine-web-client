@@ -560,7 +560,7 @@ export async function connect (connectOptions: ConnectOptions) {
     }
 
     const brand = clientDataStream ? 'minecraft-web-client' : undefined
-    const nativePhysics = options.nativePhysics ? await loadNativePhysics() : undefined
+    const nativePhysics = options.physicsEngine === 'native' ? await loadNativePhysics() : undefined
     bot = mineflayer.createBot({
       nativePhysics,
       host: server.host,

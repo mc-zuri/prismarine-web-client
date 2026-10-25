@@ -97,8 +97,8 @@ export const defaultOptions = {
   autoOpenAuthModal: false,
   autoJump: 'auto' as 'auto' | 'always' | 'never',
   autoParkour: false,
-  /** minecraft-physics-native (WebAssembly) moves the player, its boat and mount instead of mineflayer-physics-utils. */
-  nativePhysics: false,
+  /** The engines moving the player, its boat and mount: mineflayer-physics-utils' or minecraft-physics-native's (WebAssembly). */
+  physicsEngine: 'physics-utils' as 'physics-utils' | 'native',
   // advanced bot options
   autoRespawn: false,
   mutedSounds: [] as string[],
@@ -242,6 +242,11 @@ export const optionsMeta: Partial<Record<keyof typeof defaultOptions, OptionMeta
   },
   autoJump: {
     possibleValues: ['always', 'auto', 'never']
+  },
+  physicsEngine: {
+    text: 'Physics',
+    tooltip: 'Physics Utils: mineflayer-physics-utils (TypeScript). Native: minecraft-physics-native (Rust, as WebAssembly). Applies from the next connect.',
+    possibleValues: [['physics-utils', 'Physics Utils'], ['native', 'Native (Wasm)']]
   },
   saveLoginPassword: {
     possibleValues: ['prompt', 'always', 'never']
