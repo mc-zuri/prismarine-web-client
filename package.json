@@ -88,7 +88,7 @@
     "mcraft-fun-mineflayer": "^0.1.23",
     "minecraft-data": "0.0.0",
     "minecraft-inventory": "^0.1.47",
-    "minecraft-physics-native": "link:../../github/minecraft-physics-native-wasm",
+    "minecraft-physics-native": "link:../minecraft-physics-native",
     "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
     "minecraft-renderer": "^0.1.99",
     "mineflayer-item-map-downloader": "github:zardoy/mineflayer-item-map-downloader",
@@ -159,7 +159,7 @@
     "https-browserify": "^1.0.0",
     "mc-assets": "^0.2.88",
     "mineflayer": "0.0.0",
-    "mineflayer-mouse": "file:../../github/mineflayer-mouse",
+    "mineflayer-mouse": "file:../mineflayer-mouse",
     "npm-run-all": "^4.1.5",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
@@ -199,7 +199,7 @@
   "pnpm": {
     "overrides": {
       "mineflayer": "file:../mineflayer",
-      "minecraft-renderer": "file:../../github/minecraft-renderer",
+      "minecraft-renderer": "file:../minecraft-renderer",
       "@nxg-org/mineflayer-physics-util": "file:../mineflayer-physics-utils",
       "@nxg-org/mineflayer-pathfinder": "file:../minecraft-pathfinding",
       "mineflayer-survival": "file:../mineflayer-survival",
@@ -210,17 +210,17 @@
       "diamond-square": "github:zardoy/diamond-square",
       "prismarine-block": "github:zardoy/prismarine-block#next-era",
       "prismarine-world": "github:zardoy/prismarine-world#next-era",
-      "minecraft-data": "link:../../mineflayer-monorepo/packages/minecraft-data",
+      "minecraft-data": "link:../minecraft-data",
       "prismarine-provider-anvil": "github:zardoy/prismarine-provider-anvil#everything",
       "prismarine-physics": "github:zardoy/prismarine-physics",
-      "minecraft-protocol": "file:../../mineflayer-monorepo/packages/minecraft-protocol",
+      "minecraft-protocol": "file:../minecraft-protocol",
       "react": "^18.2.0",
-      "prismarine-chunk": "file:../../github/prismarine-chunk",
-      "mc-assets": "file:../../github/mc-assets",
-      "prismarine-item": "file:../../mineflayer-monorepo/packages/prismarine-item",
-      "prismarine-windows": "file:../../mineflayer-monorepo/packages/prismarine-windows",
+      "prismarine-chunk": "file:../prismarine-chunk",
+      "mc-assets": "file:../mc-assets",
+      "prismarine-item": "file:../prismarine-item",
+      "prismarine-windows": "file:../prismarine-windows",
       "valtio": "1.13.2",
-      "mineflayer-mouse": "file:../../github/mineflayer-mouse"
+      "mineflayer-mouse": "file:../mineflayer-mouse"
     },
     "updateConfig": {
       "ignoreDependencies": [
