@@ -183,7 +183,7 @@ export const OptionButton = ({ item, onClick, valueText }: {
           settingLabel: translate(item.text || item.id),
           currentValue: optionValue,
           possibleValues,
-          requiresRestart: item.requiresRestart,
+          requiresRestart: item.requiresRestart || item.requiresRestartWhenInGame,
           requiresChunksReload: item.requiresChunksReload,
           tooltip: item.tooltip,
         })
