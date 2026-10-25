@@ -37,6 +37,7 @@ import downloadAndOpenFile, { isInterestedInDownload } from './downloadAndOpenFi
 import fs from 'fs'
 import net, { Socket } from 'net'
 import mineflayer from 'mineflayer'
+import { loadNativePhysics } from './nativePhysics'
 
 import debug from 'debug'
 import { defaultsDeep } from 'lodash-es'
@@ -559,7 +560,9 @@ export async function connect (connectOptions: ConnectOptions) {
     }
 
     const brand = clientDataStream ? 'minecraft-web-client' : undefined
+    const nativePhysics = options.nativePhysics ? await loadNativePhysics() : undefined
     bot = mineflayer.createBot({
+      nativePhysics,
       host: server.host,
       port: server.port ? +server.port : undefined,
       brand,

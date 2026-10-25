@@ -182,6 +182,9 @@ importers:
       minecraft-inventory:
         specifier: ^0.1.47
         version: 0.1.47(patch_hash=9a3013a9b51b9ab622f7054d3d7aefdc8b9b028032f8e840ec359e7ffb6cbd65)(@xmcl/text-component@2.1.3)(mc-assets@file:../../github/mc-assets)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      minecraft-physics-native:
+        specifier: link:../../github/minecraft-physics-native-wasm
+        version: link:../../github/minecraft-physics-native-wasm
       minecraft-protocol:
         specifier: file:../../mineflayer-monorepo/packages/minecraft-protocol
         version: file:../../mineflayer-monorepo/packages/minecraft-protocol(patch_hash=678c21f8f7154c8c80763d513bba634e4c87f0308f3ff092ded29a9e55f23b86)(encoding@0.1.13)

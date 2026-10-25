@@ -97,6 +97,8 @@ export const defaultOptions = {
   autoOpenAuthModal: false,
   autoJump: 'auto' as 'auto' | 'always' | 'never',
   autoParkour: false,
+  /** minecraft-physics-native (WebAssembly) moves the player, its boat and mount instead of mineflayer-physics-utils. */
+  nativePhysics: false,
   // advanced bot options
   autoRespawn: false,
   mutedSounds: [] as string[],

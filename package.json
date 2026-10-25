@@ -88,6 +88,7 @@
     "mcraft-fun-mineflayer": "^0.1.23",
     "minecraft-data": "0.0.0",
     "minecraft-inventory": "^0.1.47",
+    "minecraft-physics-native": "link:../../github/minecraft-physics-native-wasm",
     "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol#aa23a03964bf84e2f7fe813818a4ec5b7b2a1270",
     "minecraft-renderer": "^0.1.99",
     "mineflayer-item-map-downloader": "github:zardoy/mineflayer-item-map-downloader",
